@@ -2,15 +2,15 @@ library(jsonlite)
 library(ggmap)
 library(dplyr)
 
-setwd("/home/mapastec/Documents/studia/KoloNaukowe/katowice")
+setwd("/home/mapastec/Documents/studia/KoloNaukowe/dane/remastered/source/katowiceVisualisations")
 
 # Load data
 
-df <- fromJSON('przystanki.json')
-all <- read.csv("lokale_48.csv", sep = ",", header = TRUE)
-markety <- read.csv("../dane/remastered/source/markety1.csv", sep = ",", header = TRUE)
-medic <- read.csv("../dane/remastered/source/medic.csv", sep = ",", header = TRUE)
-szkoly <-read.csv("../dane/remastered/source/szkolykur.csv", sep = ";", header = TRUE, stringsAsFactors = FALSE)
+df <- fromJSON('data/przystanki.json')
+all <- read.csv("data/lokale_48.csv", sep = ",", header = TRUE)
+markety <- read.csv("data/markety1.csv", sep = ",", header = TRUE)
+medic <- read.csv("data/medic.csv", sep = ",", header = TRUE)
+szkoly <-read.csv("data/szkolykur.csv", sep = ";", header = TRUE, stringsAsFactors = FALSE)
 
 # przystanki
 
