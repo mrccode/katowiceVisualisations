@@ -97,18 +97,39 @@ apartments <- subset(all, select = c(Cena.jednostkowa.netto, Rodzaj.transakcji,
 
 str(apartments)
 
-circle_scale_amt = 0.0001 # make the circles 1% of the price.
+circle_scale_amt = 0.001 # make the circles 1% of the price.
 
 KatowiceMAP = ggmap(katowice_map_g_str)
 
 KatowiceMAP +
-  geom_point(aes(x=lon, y=lat), data=apartments, col="orange", alpha=0.4, 
+  geom_point(aes(x=lon, y=lat), data=apartments, col="Blue", alpha=0.2, 
              size=apartments$Cena.jednostkowa.netto*circle_scale_amt) + 
   scale_size_continuous(range=range(apartments$Cena.jednostkowa.netto))
 
+KatowiceMAP +
+  geom_point(aes(x=lon, y=lat), data=apartments, alpha=0.2,
+             size=apartments$Cena.jednostkowa.netto*circle_scale_amt, 
+             colour=apartments$Pow..lokalu.obliczeniowa) +
+             scale_size_continuous(range=range(apartments$Cena.jednostkowa.netto) +
+             scale_colour_gradientn(colours = rainbow(7), breaks = seq(25, 200, by = 25)))
+
+KatowiceMAP +
+  geom_point(aes(x=lon, y=lat, color=Cena.jednostkowa.netto), data=apartments, alpha=0.2,
+             size=apartments$Cena.jednostkowa.netto*circle_scale_amt) +
+             scale_size_continuous(range=range(apartments$Cena.jednostkowa.netto)) +
+             scale_colour_gradientn(colours = terrain.colors(10))
+
+# Draw the heat map
+ggmap(katowice_map_g_str, extent = "device") + geom_density2d(data = apartments, aes(x = lon, y = lat), size = 0.3) + 
+  stat_density2d(data = apartments, 
+                 aes(x = lon, y = lat, fill = ..level.., alpha = ..level..), size = 0.01, 
+                 bins = 16, geom = "polygon") + scale_fill_gradient(low = "green", high = "red") + 
+  scale_alpha(range = c(0, 0.3), guide = FALSE)
+
+
+var(apartments$Cena.jednostkowa.netto)
+summary(apartments$Cena.jednostkowa.netto)
 
 max(apartments$Cena.jednostkowa.netto)
 
-summary(apartments$Cena.jednostkowa.netto)
-
-apartments[apartments$Cena.jednostkowa.netto > 22600,]
+nrow(apartments[apartments$Cena.jednostkowa.netto < 500,])
